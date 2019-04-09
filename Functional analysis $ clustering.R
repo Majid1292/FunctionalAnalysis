@@ -7,7 +7,7 @@ library(shape)
 library('data.table')
 library('fda')
 #############################################PROGRAM#############################################
-data=fread("gen.txt") #READ DATA
+data=fread("gene.txt") #READ DATA
 gene=data[1:34]
 Data <- subset( gene, select = -gene )
 Data=t(as.matrix(sapply(Data, as.numeric)))

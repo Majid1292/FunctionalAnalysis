@@ -1,4 +1,4 @@
-
+###################################Needed Packages###############################################
 install.packages('data.table')
 install.packages("cluster")
 install.packages("shape")
@@ -7,7 +7,7 @@ library(shape)
 library('data.table')
 library('fda')
 #############################################PROGRAM#############################################
-data=fread("gene.txt") #READ DATA
+data=fread("gen.txt") #READ DATA
 gene=data[1:34]
 Data <- subset( gene, select = -gene )
 Data=t(as.matrix(sapply(Data, as.numeric)))
@@ -49,13 +49,13 @@ tempfdPar = fdPar(daybasis10,harmLfd,1e4)
 tempfd = smooth.basis(1:10,Data,tempfdPar)
 quartz()
 par(mfrow=c(1,1),mar = c(8, 8, 4, 2))
-plot(tempfd$fd,xlab='day',ylab='temperature',cex.lab=1.5,cex.axis=1.5)
+plot(tempfd$fd,xlab='Time',ylab='Gene expression',cex.lab=1.5,cex.axis=1.5)
 
 tempvar = var.fd(tempfd$fd)
 tvvals = eval.bifd(1:10,1:10,tempvar)
 quartz()
 par(mfrow=c(1,1),mar = c(8, 8, 4, 2))
-contour(1:10,1:10,tvvals,xlab='time',ylab='time',cex.lab=1.5,cex.axis=1.5)
+contour(1:10,1:10,tvvals,xlab='time',ylab='Gene expression',cex.lab=1.5,cex.axis=1.5)
 
 quartz()
 par(mfrow=c(1,1),mar = c(8, 8, 4, 2))
@@ -74,13 +74,13 @@ pharmvals = eval.fd(1:10,pharmfd)
 quartz()
 par(mfrow=c(2,2),mar = c(8, 8, 4, 2))
 for (i in 1:4){
-plot(1:10,pharmvals[,i],xlab='day',ylab='PCs',
-     lwd=2,lty=1,cex.lab=1,cex.axis=1,type='l', col=i)
+  plot(1:10,pharmvals[,i],xlab='Time',ylab='PCs',
+       lwd=2,lty=1,cex.lab=1,cex.axis=1,type='l', col=i)
 }
 # plot all 4 FPCs
 quartz()
 par(mfrow=c(1,1),mar = c(8, 8, 4, 2))
-matplot(1:10,pharmvals,xlab='day',ylab='PCs',
+matplot(1:10,pharmvals,xlab='Time',ylab='PCs',
         lwd=4,lty=1,cex.lab=1.5,cex.axis=1.5,type='l')
 legend(1,-0.03,c('PC1','PC2','PC3','PC4'),col=1:4,lty=1,lwd=5)
 title('Gene Principle Component Functions')
@@ -89,7 +89,8 @@ quartz()
 par(mfrow=c(1,1),mar = c(8, 8, 4, 2))
 plot(ptemppca$scores[,1:2],xlab='PC Score 1',ylab='PC Score 2',col=11,
      cex.lab=1.5,cex.axis=1.5,cex=1, lwd=4)
-#Clustring
+
+#Clustering and plot each cluster
 set.seed(100)
 kmean<-kmeans(ptemppca$scores[,c(1,4)],4,iter.max = 5000,nstart = 10)
 clusplot(ptemppca$scores[,c(1,4)],kmean$cluster,line=0,shade = TRUE,color = TRUE,labels = 4 ,plotchar = TRUE,span = TRUE,main = paste('Clusters of the gene'))
@@ -117,5 +118,3 @@ plot(tempc3$fd,xlab='Time',ylab='Gene expression',cex.lab=1,cex.axis=1)
 title('Gene Expression Component Functions of Cluster #3')
 plot(tempc4$fd,xlab='Time',ylab='Gene expression',cex.lab=1,cex.axis=1)
 title('Gene Expression Component Functions of Cluster #4')
-
-  
